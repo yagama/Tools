@@ -87,6 +87,7 @@ if __name__ == '__main__':
     if current_page:
         articles = []  # 全部的今日文章
         date = time.strftime("%m/%d").lstrip('0')  # 今天日期, 去掉開頭的 '0' 以符合 PTT 網站格式
+        #date = '7/07'  # 今天日期, 去掉開頭的 '0' 以符合 PTT 網站格式
         current_articles, prev_url = get_articles(current_page, date)  # 目前頁面的今日文章
         while current_articles:  # 若目前頁面有今日文章則加入 articles，並回到上一頁繼續尋找是否有今日文章
             articles += current_articles
@@ -102,10 +103,10 @@ if __name__ == '__main__':
                 title_save = article['title']
                 title_save = title_save.replace(':',' ')
                 title_save = title_save.replace('*',' ')
-
+                title_save = title_save.replace('.',' ')
                 save(img_urls, title_save)
                 article['num_image'] = len(img_urls)
 
         # 儲存文章資訊
-        with open('data.json', 'w', encoding='utf-8') as f:
-            json.dump(articles, f, indent=2, sort_keys=True, ensure_ascii=False)
+        with open('data_' + time.strftime("%m%d") + '.json', 'w', encoding='utf-8') as f:
+            json.dump(articles, f, indent=4, sort_keys=True, ensure_ascii=False)
